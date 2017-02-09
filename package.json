@@ -1,0 +1,24 @@
+{
+  "name": "1dv527-examination2",
+  "version": "1.0.0",
+  "description": "RestAPI",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1dv527/dekes03-examination-2.git"
+  },
+  "author": "Ekerot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1dv527/dekes03-examination-2/issues"
+  },
+  "homepage": "https://github.com/1dv527/dekes03-examination-2#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "body-parser": "^1.16.0",
+    "nodemon": "^1.11.0"
+  }
+}
