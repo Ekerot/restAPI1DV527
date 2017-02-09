@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/1dv527/dekes03-examination-2#readme",
   "dependencies": {
-    "express": "^4.14.1",
     "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "mongoose": "^4.8.1",
     "nodemon": "^1.11.0"
   }
 }
