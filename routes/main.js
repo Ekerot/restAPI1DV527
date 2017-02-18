@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     res.status(200).send(
         {
             status: "200: OK",
-            message: 'Welcome to "Den svartmunnade smörbultens bannes" API.',
+            message: "Welcome to 'Den svartmunnade smörbultens banne' API.",
             _links: {
                 self: [
                     {
@@ -23,32 +23,44 @@ router.get('/', (req, res) => {
                 to:
                     [
                         {
-                            href: "http://localhost:3000/api/v1/catches/",
+                            href: "http://localhost:3000/api/v1/catches",
                             type: "application/json",
                             rel: "next",
                             verb: "GET",
                             title: "Collection of catches"
                         },
                         {
-                            href: "http://localhost:3000/api/v1/register/",
+                            href: "http://localhost:3000/api/v1/catches",
                             type: "application/json",
-                            rel: "next",
+                            rel: "self",
                             verb: "POST",
-                            title: "Register a user"
+                            title: "Creating new data",
+                            description: "Parameters: longitude, latitude, " +
+                            "species, weight, length, imageurl, method, description"
                         },
                         {
-                            href: "http://localhost:3000/api/v1/user",
+                            href: "http://localhost:3000/api/v1/register",
                             type: "application/json",
                             rel: "next",
                             verb: "POST",
-                            title: "Login as user"
+                            title: "Register a user",
+                            description: "Parameters: username, password, email. All are required"
+                        },
+                        {
+                            href: "http://localhost:3000/api/v1/login",
+                            type: "application/json",
+                            rel: "next",
+                            verb: "POST",
+                            title: "Login user",
+                            description: "Parameters: username, password. All are required"
                         },
                         {
                             href: "http://localhost:3000/api/v1/users",
                             type: "application/json",
                             rel: "next",
-                            verb: "DELETE",
-                            title: "Show users - admin role needed!"
+                            verb: "GET",
+                            title: "Show users",
+                            description: "Admin role required to grant access"
                         }
                     ],
             }

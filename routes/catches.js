@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 
         let context = {
             status: '200: OK',
-            catches: fish.map((fish) =>
+            data: fish.map((fish) =>
             {
                 return {
                     catch: {
@@ -56,14 +56,18 @@ router.get('/', (req, res) => {
                                     type: "application/json",
                                     rel: "next",
                                     verb: "PUT",
-                                    title: "Update data"
+                                    title: "Update data",
+                                    description: "Parameters: longitude, latitude, " +
+                                    "species, weight, length, imageurl, method, description. " +
+                                    "Login needed"
                                 },
                                 {
                                     href: "http://localhost:3000/api/v1/catches/"+fish._id,
                                     type: "application/json",
                                     rel: "next",
                                     verb: "DELETE",
-                                    title: "Delete data"
+                                    title: "Delete data",
+                                    description: "Login needed"
                                 }
                             ],
                         from:
@@ -152,48 +156,52 @@ router.post('/',(req, res) => {
 router.get('/:id', (req, res) => {
 
     //Search for data by ID
-    FishData.findById(req.params.id, (err, catchData) => {
+    FishData.findById(req.params.id, (err, fish) => {
+        if (err)
+            res.send(err);
 
-        catchData: status: '200: OK',
-            fish.map((fish) =>
-            {
-
-                return {
-                    id: fish._id,
-                    username: fish.username,
-                    longitude: fish.longitude,
-                    latitude: fish.latitude,
-                    species: fish.species,
-                    weight: fish.weight,
-                    length: fish.length,
-                    imageurl: fish.imageurl,
-                    timestamp: fish.timestamp,
-                    method: fish.method,
-                    description: fish.description,
+        let context = {
+            status: '200: OK',
+            data: {
+                    catch: {
+                        id: fish._id,
+                        username: fish.username,
+                        longitude: fish.longitude,
+                        latitude: fish.latitude,
+                        species: fish.species,
+                        weight: fish.weight,
+                        length: fish.length,
+                        imageurl: fish.imageurl,
+                        timestamp: fish.timestamp,
+                        method: fish.method,
+                        description: fish.description
+                    },
 
                     _links: {
-                        self: [{
-                            href: "http://localhost:3000/api/v1/catches/"+fish._id,
-                            type: "application/json",
-                            rel: "self",
-                            verb: "GET",
-                            title: "Single data of a catch"
-                        }],
-                        from:[
+                        self: [
+                            {
+                                href: "http://localhost:3000/api/v1/catches/" + fish._id,
+                                type: "application/json",
+                                rel: "self",
+                                verb: "GET",
+                                title: "Single data of a catch"
+                            }
+                        ],
+                        from: [
                             {
                                 href: "http://localhost:3000/api/v1/catches",
                                 type: "application/json",
                                 rel: "previous",
                                 verb: "GET",
                                 title: "A collection of catches"
-                            }]
+                            }
+                        ]
                     }
-                }
-            });
-
-        return res.status(200).send(catchData); //send data
+            }
+        };
+        return res.status(200).send(context); //send data
     });
-})
+});
 
 router.put('/:id',(req, res) => {
 
@@ -239,32 +247,34 @@ router.put('/:id',(req, res) => {
                                 if (err)
                                     return res.send(err);
 
-                                return res.status(202).send({
-                                    status: '202: Accepted',
-                                    message: 'Data updated',
-                                    _links: {
-                                        self: [{
-                                            href: "http://localhost:3000/api/v1/catches/"+req.params.id,
-                                            type: "application/json",
-                                            rel: "self",
-                                            verb: "PUT",
-                                            title: "Update data"
-                                        }],
-                                        from:[
-                                            {
-                                                href: "http://localhost:3000/api/v1/catches",
-                                                type: "application/json",
-                                                rel: "previous",
-                                                verb: "GET",
-                                                title: "A collection of catches"
-                                            }]
-                                    }
-                                });
                             });
                         }
                     });
                 });
             }
+            return res.status(202).send({
+                status: '202: Accepted',
+                message: 'Data updated',
+                _links: {
+                    self: [
+                        {
+                            href: "http://localhost:3000/api/v1/catches/"+req.params.id,
+                            type: "application/json",
+                            rel: "self",
+                            verb: "PUT",
+                            title: "Update data"
+                        }
+                    ],
+                    from:[
+                        {
+                            href: "http://localhost:3000/api/v1/catches",
+                            type: "application/json",
+                            rel: "previous",
+                            verb: "GET",
+                            title: "A collection of catches"
+                        }]
+                }
+            });
         });
     } else {
 
@@ -307,13 +317,15 @@ router.delete('/:id',(req, res) => {
                             status: '202: Accepted',
                             message: 'Fish data deleted!',
                             _links: {
-                                self: [{
-                                    href: "http://localhost:3000/api/v1/catches/" + req.params.id,
-                                    type: "application/json",
-                                    rel: "self",
-                                    verb: "DELETE",
-                                    title: "Delete data"
-                                }],
+                                self: [
+                                    {
+                                        href: "http://localhost:3000/api/v1/catches/" + req.params.id,
+                                        type: "application/json",
+                                        rel: "self",
+                                        verb: "DELETE",
+                                        title: "Delete data"
+                                    }
+                                ],
                                 from: [
                                     {
                                         href: "http://localhost:3000/api/v1/catches",

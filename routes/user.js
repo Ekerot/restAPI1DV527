@@ -13,7 +13,7 @@ router.post('/login', (req,res) => {
 
         if(!user)
             return res.status(401).send({
-                status: 'Error',
+                status: '401: Unauthorized',
                 message: 'User not found!'
             });
 
@@ -24,7 +24,7 @@ router.post('/login', (req,res) => {
 
                 else if(!userpassword)
                     return res.status(403).send({
-                        status: 'Error',
+                        status: '403: Forbidden',
                         message: 'Password not valid!'
                     });
 
@@ -34,9 +34,29 @@ router.post('/login', (req,res) => {
                     });
 
                     return res.status(200).send({
-                        status: 'OK - status 200',
+                        status: '200: OK',
                         message: 'Welcome!',
-                        token: token
+                        token: token,
+                        _links: {
+                            self: [
+                                {
+                                    href: "http://localhost:3000/api/v1/login",
+                                    type: "application/json",
+                                    rel: "next",
+                                    verb: "POST",
+                                    title: "Login as user"
+                                }
+                            ],
+                            from: [
+                                {
+                                    href: "http://localhost:3000/api/v1",
+                                    type: "application/json",
+                                    rel: "self",
+                                    verb: "GET",
+                                    title: "This is the API root!"
+                                }]
+                        }
+
                     });
                 }
             });
@@ -52,7 +72,8 @@ router.get('/users', (req, res) => {
 
         jwt.verify(token, process.env.TOKEN, function (err, decoded) {
             if (err) {
-                return res.json({success: false, message: 'Your token is not valid!'});
+                return res.status(401).send({
+                    status: '401: Unauthorized', message: 'Your token is not valid!'});
 
             } else {
 
@@ -73,7 +94,26 @@ router.get('/users', (req, res) => {
                                         email: users.email,
                                         admin: users.admin
                                     }
-                                })
+                                }),
+                                _links: {
+                                    self: [
+                                        {
+                                            href: "http://localhost:3000/api/v1/users",
+                                            type: "application/json",
+                                            rel: "self",
+                                            verb: "GET",
+                                            title: "Users data"
+                                        }
+                                    ],
+                                    from: [
+                                        {
+                                            href: "http://localhost:3000/api/v1",
+                                            type: "application/json",
+                                            rel: "self",
+                                            verb: "GET",
+                                            title: "This is the API root!"
+                                        }]
+                                }
                             };
                             res.json(context);
                         });
@@ -81,7 +121,7 @@ router.get('/users', (req, res) => {
 
                     else
                         return res.status(403).send({
-                            status: 'Forbidden',
+                            status: '403: Forbidden',
                             message: 'You are not granted access to this url!'
                         });
                 });
@@ -91,7 +131,7 @@ router.get('/users', (req, res) => {
     } else {
 
         return res.status(401).send({
-            status: 'Error',
+            status: '401: Unauthorized',
             message: 'Token not provided'
         });
     }

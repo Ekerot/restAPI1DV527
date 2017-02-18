@@ -24,7 +24,7 @@ app.use('/api/v1', require('./routes/register'));
 app.use('/api/v1', require('./routes/user'));
 app.use('/api/v1/catches', require('./routes/catches'));
 
-app.use((req, res) => res.status(404).json({message: '404 - No response'}));
+app.use((req, res) => res.status(404).json({status: '404: No response'}));
 
 app.listen(port, () => console.log(new Date() + ` Express app listening on port ${port}!`
     + '\nIf you want to terminate press ctrl+c'));

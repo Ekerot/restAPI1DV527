@@ -25,7 +25,29 @@ router.post('/register', (req, res) =>{
 
         user.save()
             .then(() => {
-                res.status(200).send({status: "OK", message: 'Your account registered successfully'});
+                res.status(200).send({
+                    status: "OK",
+                    message: 'Your account registered successfully',
+                    _links: {
+                        self: [
+                            {
+                                href: "http://localhost:3000/api/v1/register",
+                                type: "application/json",
+                                rel: "next",
+                                verb: "POST",
+                                title: "Register a user"
+                            }
+                        ],
+                        from: [
+                            {
+                                href: "http://localhost:3000/api/v1",
+                                type: "application/json",
+                                rel: "self",
+                                verb: "GET",
+                                title: "This is the API root!"
+                            }]
+                    }
+                });
             }).catch((err) =>{
                 return res.json({message: err});
             })
