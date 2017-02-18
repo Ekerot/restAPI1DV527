@@ -12,14 +12,17 @@ const       port = process.env.PORT || 3000;
 
 const       mongoose = require('./config/mongoose');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 mongoose();
 
 //------------------routes--------------------------//
 
-
-app.use('/api', require('./routes/main.js'));
+app.use('/api/v1', require('./routes/main.js'));
+app.use('/api/v1', require('./routes/register'));
+app.use('/api/v1', require('./routes/user'));
+app.use('/api/v1/catches', require('./routes/catches'));
 
 app.use((req, res) => res.status(404).json({message: '404 - No response'}));
 
