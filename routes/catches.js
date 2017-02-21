@@ -7,12 +7,18 @@ const router = require('express').Router();
 const FishData = require('../models/Fishdata.js');
 const Users = require('../models/Users.js');
 const jwt = require('jsonwebtoken');
+const WebHooks = require('node-webhooks');
 
-router.get('/', (req, res) => {
+let webHooks = new WebHooks({
+    db: './webHooksDB.json', // json file that store webhook URLs
+    debug: true
+});
+
+router.get('/', (req, res) => {   //shows all registered data
 
     FishData.find((err, fish) => {
         if (err)
-            res.send(err);
+            res.send({Message: `Error ${err}`});
 
         let context = {
             status: '200: OK',
@@ -59,7 +65,7 @@ router.get('/', (req, res) => {
                                     title: "Update data",
                                     description: "Parameters: longitude, latitude, " +
                                     "species, weight, length, imageurl, method, description. " +
-                                    "Login needed"
+                                    "Login needed! When you enter your token use x-access-token as parameter"
                                 },
                                 {
                                     href: "http://localhost:3000/api/v1/catches/"+fish._id,
@@ -67,7 +73,8 @@ router.get('/', (req, res) => {
                                     rel: "next",
                                     verb: "DELETE",
                                     title: "Delete data",
-                                    description: "Login needed"
+                                    description:  "Login needed! When you enter your " +
+                                    "token use x-access-token as parameter"
                                 }
                             ],
                         from:
@@ -82,20 +89,21 @@ router.get('/', (req, res) => {
                 }
             })
         };
+        res.setHeader("Cache-control", "public");
         return res.status(200).send(context);
     });
 });
 
-router.post('/',(req, res) => {
+router.post('/',(req, res) => {    // register new data
     let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (token) {
 
-        jwt.verify(token, process.env.TOKEN, function (err, decoded) {
+        jwt.verify(token, process.env.TOKEN, (err, decoded) => { //verify user is authenticated
 
             if (err) {
-                return res.status(401).send({
-                    status: '401: Unauthorized',
+                return res.status(403).send({
+                    status: '403: Forbidden',
                     message: 'Token not valid!'
                 });
             } else {
@@ -117,9 +125,11 @@ router.post('/',(req, res) => {
                     description: req.body.description
                 });
 
-                fishData.save().then((err) => {
+                fishData.save().then((err) => {  // save data to DBS
                     if (err)
                         return res.send(err);
+
+                    res.setHeader('Cache-control', 'no-cache');
 
                     return res.status(201).send({
                         status: '201: Created',
@@ -142,23 +152,24 @@ router.post('/',(req, res) => {
                                 }
                         }});
                 });
+                webHooks.trigger('createcatchdata', fishData);  //trigger the webhook(thetriggername, data)
             }
         });
     } else {
 
-        return res.status(401).send({
-            status: '401: Unautharized',
+        return res.status(403).send({
+            status: '403: Forbidden',
             message: 'Token not provided'
         });
     }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {  //gets individual data for each catch
 
     //Search for data by ID
     FishData.findById(req.params.id, (err, fish) => {
         if (err)
-            res.send(err);
+            return res.send({Message: `Error ${err}`});
 
         let context = {
             status: '200: OK',
@@ -199,31 +210,33 @@ router.get('/:id', (req, res) => {
                     }
             }
         };
+        res.setHeader("Cache-control", "public");
         return res.status(200).send(context); //send data
     });
 });
 
-router.put('/:id',(req, res) => {
+router.put('/:id',(req, res) => {  // update and change data in registered catch
 
     let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (token) {
 
-        jwt.verify(token, process.env.TOKEN, function (err, decoded) {
+        jwt.verify(token, process.env.TOKEN, function (err, decoded) { //verify token
 
             if (err) {
-                return res.status(401).send({
-                    status: '401: Unauthorized',
+                return res.status(403).send({
+                    status: '403: Forbidden',
                     message: 'Token not valid!'
                 });
             } else {
 
-                FishData.findById(req.params.id, (err, catchData) => {
+                FishData.findById(req.params.id, (err, catchData) => {  //find data by id
 
-                    Users.findOne({username: decoded.username}, (err, user) => {
+                    Users.findOne({username: decoded.username}, (err, user) => {    //Only the user that registered
+                                                                                    // the data can change it.
 
                         if (user.username !== catchData.username)
-                            return res.status(401).send({
+                            return res.status(403).send({
                                 status: '403: Forbidden',
                                 message: 'You are not allowed to update data that belongs to other users!'
                             });
@@ -231,7 +244,7 @@ router.put('/:id',(req, res) => {
                         else {
 
                             if (err)
-                                return res.send(err);
+                                res.send({Message: `Error ${err}`});
 
                             catchData.longitude = req.body.longitude;
                             catchData.latitude = req.body.latitude;
@@ -252,6 +265,9 @@ router.put('/:id',(req, res) => {
                     });
                 });
             }
+
+            res.setHeader("Cache-control", "no-cache");
+
             return res.status(202).send({
                 status: '202: Accepted',
                 message: 'Data updated',
@@ -278,8 +294,8 @@ router.put('/:id',(req, res) => {
         });
     } else {
 
-        return res.status(401).send({
-            status: '401: Unauthorized',
+        return res.status(403).send({
+            status: '403: Forbidden',
             message: 'Token not provided'
         });
     }
@@ -291,18 +307,18 @@ router.delete('/:id',(req, res) => {
 
     if (token) {
 
-        jwt.verify(token, process.env.TOKEN, function (err, decoded) {
+        jwt.verify(token, process.env.TOKEN, function (err, decoded) { //verify token
             if (err) {
 
-                return res.status(401).send({
-                    status: '401: Unauthorized',
+                return res.status(403).send({
+                    status: '403: Forbidden',
                     message: 'Token not valid'
                 });
             } else {
 
-                FishData.findOneAndRemove(req.params.id, (err, catchData) => {
+                FishData.findOneAndRemove(req.params.id, (err, catchData) => { //find and remove data on id
 
-                    Users.findOne({username: decoded.username}, (err, user) => {
+                    Users.findOne({username: decoded.username}, (err, user) => { //verify user
 
                         if (user.username !== catchData.username)
                             return res.status(403).send({
@@ -311,8 +327,9 @@ router.delete('/:id',(req, res) => {
                             });
 
                         if (err)
-                            res.send(err);
+                            res.send({Message: `Error ${err}`});
 
+                        res.setHeader("Cache-control", "no-cache");
                         return res.status(202).send({
                             status: '202: Accepted',
                             message: 'Fish data deleted!',
@@ -342,12 +359,11 @@ router.delete('/:id',(req, res) => {
         });
     } else {
 
-        return res.status(401).send({
-            status: '401: Unauthorized',
+        return res.status(403).send({
+            status: '403: Forbidden',
             message: 'Token not provided'
         });
     }
-
 });
 
 module.exports = router;

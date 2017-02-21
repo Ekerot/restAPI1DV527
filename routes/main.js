@@ -5,7 +5,9 @@
  */
 const router = require('express').Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => {  //first route to go to information about the api
+
+    res.setHeader("Cache-control", "public");
     res.status(200).send(
         {
             status: "200: OK",
@@ -47,20 +49,11 @@ router.get('/', (req, res) => {
                             description: "Parameters: username, password, email. All are required"
                         },
                         {
-                            href: "http://localhost:3000/api/v1/login",
-                            type: "application/json",
-                            rel: "next",
-                            verb: "POST",
-                            title: "Login user",
-                            description: "Parameters: username, password. All are required"
-                        },
-                        {
-                            href: "http://localhost:3000/api/v1/users",
+                            href: "http://localhost:3000/api/v1/add/webhook",
                             type: "application/json",
                             rel: "next",
                             verb: "GET",
-                            title: "Show users",
-                            description: "Admin role required to grant access"
+                            title: "Webbhook information",
                         }
                     ],
             }

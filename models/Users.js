@@ -16,7 +16,7 @@ let userSchema = new mongoose.Schema({
     admin: {type:Boolean}
 });
 
-//making a pre dave that hashing the password
+//making a pre save that hashing the password
 userSchema.pre('save', function(next) {
 
     let user = this;

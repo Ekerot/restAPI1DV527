@@ -3,38 +3,40 @@
 /**
  * Created by ekerot on 2017-02-16.
  */
+
 const router = require('express').Router();
 const Users = require('../models/Users.js');
 const jwt = require('jsonwebtoken');
 
-router.post('/login', (req,res) => {
+router.post('/users', (req,res) => {
 
     Users.findOne({username: req.body.username}, (err, user) => {
 
         if(!user)
-            return res.status(401).send({
-                status: '401: Unauthorized',
+            return res.status(403).send({
+                status: '403: Forbidden',
                 message: 'User not found!'
             });
 
         else{
-            user.comparePassword(req.body.password, (err, userpassword) =>{
+            user.comparePassword(req.body.password, (err, userpassword) =>{  //check for valid password
                 if(err)
-                    res.json({message: err});
+                    res.send({Message: `Error ${err}`});
 
-                else if(!userpassword)
+                else if(!userpassword) //if password does not match
                     return res.status(403).send({
                         status: '403: Forbidden',
                         message: 'Password not valid!'
                     });
 
                 else{
-                    let token = jwt.sign({username: user.username}, process.env.TOKEN, {
-                        expiresIn: '1h'
+                    let token = jwt.sign({username: user.username}, process.env.TOKEN, { // sign JWT token store username
+                        expiresIn: '2h' //expires in 2h - we don´ want it to be to long on the protected routes
                     });
 
-                    return res.status(200).send({
-                        status: '200: OK',
+                    res.setHeader("Cache-control", "no-cache");
+                    return res.status(202).send({
+                        status: '202: Accepted',
                         message: 'Welcome!',
                         token: token,
                         _links: {
@@ -64,30 +66,31 @@ router.post('/login', (req,res) => {
     });
 });
 
-router.get('/users', (req, res) => {
+router.get('/users', (req, res) => {   //get all users, only for administrators
 
     let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (token) {
 
-        jwt.verify(token, process.env.TOKEN, function (err, decoded) {
+        jwt.verify(token, process.env.TOKEN, (err, decoded) => {
             if (err) {
-                return res.status(401).send({
-                    status: '401: Unauthorized', message: 'Your token is not valid!'});
+                return res.status(403).send({
+                    status: '403: Forbidden', message: 'Your token is not valid!'});
 
             } else {
 
-                Users.findOne({username: decoded.username}, (err, user) => {
+                Users.findOne({username: decoded.username}, (err, user) => { // find user to verify if they are admin
                     if (err)
-                        return res.json(err);
+                        res.send({Message: `Error ${err}`});
 
-                    if (user.admin == true) {
+                    if (user.admin == true) { // they also need to be administrators to be allowed to enter
 
                         Users.find({}, (err, users) => {
                             if (err)
                                 return res.json(err);
 
                             let context = {
+                                status: "200: OK",
                                 users: users.map((users) => {
                                     return {
                                         username: users.username,
@@ -115,13 +118,15 @@ router.get('/users', (req, res) => {
                                         }]
                                 }
                             };
-                            res.json(context);
+
+                            res.setHeader("Cache-control", "private"); // set header to cache-control private
+                            return res.status(200).send(context);
                         });
                     }
 
                     else
-                        return res.status(403).send({
-                            status: '403: Forbidden',
+                        return res.status(401).send({
+                            status: '401: Unauthorized',
                             message: 'You are not granted access to this url!'
                         });
                 });
@@ -130,12 +135,11 @@ router.get('/users', (req, res) => {
 
     } else {
 
-        return res.status(401).send({
-            status: '401: Unauthorized',
+        return res.status(403).send({
+            status: '403: Forbidden',
             message: 'Token not provided'
         });
     }
 });
-
 
 module.exports = router;

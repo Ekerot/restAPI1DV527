@@ -9,7 +9,7 @@ const Users = require('../models/Users');
 
 router.post('/register', (req, res) =>{
 
-    if(!req.body.username || !req.body.email || !req.body.password)
+    if(!req.body.username || !req.body.email || !req.body.password) //input on all parameters needs to be done
         res.status(401).send({
             message: 'You need to enter your desired username' +
         ', password and email to register!'});
@@ -25,34 +25,35 @@ router.post('/register', (req, res) =>{
 
         user.save()
             .then(() => {
-                res.status(200).send({
-                    status: "OK",
+
+                res.setHeader('Cache-control', 'no-cache');
+                res.status(201).send({
+                    status: '201: Created',
                     message: 'Your account registered successfully',
                     _links: {
                         self: [
                             {
-                                href: "http://localhost:3000/api/v1/register",
-                                type: "application/json",
-                                rel: "next",
-                                verb: "POST",
-                                title: "Register a user"
+                                href: 'http://localhost:3000/api/v1/register',
+                                type: 'application/json',
+                                rel: 'next',
+                                verb: 'POST',
+                                title: 'Register a user'
                             }
                         ],
                         from: [
                             {
-                                href: "http://localhost:3000/api/v1",
-                                type: "application/json",
-                                rel: "self",
-                                verb: "GET",
-                                title: "This is the API root!"
+                                href: 'http://localhost:3000/api/v1',
+                                type: 'application/json',
+                                rel: 'self',
+                                verb: 'GET',
+                                title: 'This is the API root!'
                             }]
                     }
                 });
             }).catch((err) =>{
-                return res.json({message: err});
+            res.send({Message: `Error ${err}`}); // send error if something went wrong
             })
     }
 });
-
 
 module.exports = router;
