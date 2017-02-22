@@ -51,7 +51,10 @@ router.post('/register', (req, res) =>{
                     }
                 });
             }).catch((err) =>{
-            res.send({Message: `Error ${err}`}); // send error if something went wrong
+            return res.status(500).send({
+                status: '500: Internal Server Error',
+                message: 'Something went wrong! Please try again later!'
+            }); // send error if something went wrong
             })
     }
 });

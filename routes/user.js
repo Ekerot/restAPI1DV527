@@ -21,7 +21,10 @@ router.post('/users', (req,res) => {
         else{
             user.comparePassword(req.body.password, (err, userpassword) =>{  //check for valid password
                 if(err)
-                    res.send({Message: `Error ${err}`});
+                    return res.status(500).send({
+                        status: '500: Internal Server Error',
+                        message: 'Something went wrong! Please try again later!'
+                    });
 
                 else if(!userpassword) //if password does not match
                     return res.status(403).send({
@@ -31,7 +34,7 @@ router.post('/users', (req,res) => {
 
                 else{
                     let token = jwt.sign({username: user.username}, process.env.TOKEN, { // sign JWT token store username
-                        expiresIn: '2h' //expires in 2h - we don´ want it to be to long on the protected routes
+                        expiresIn: '1h' //expires in 1h - we don´ want it to be to long on the protected routes
                     });
 
                     res.setHeader("Cache-control", "no-cache");
@@ -80,14 +83,21 @@ router.get('/users', (req, res) => {   //get all users, only for administrators
             } else {
 
                 Users.findOne({username: decoded.username}, (err, user) => { // find user to verify if they are admin
+
                     if (err)
-                        res.send({Message: `Error ${err}`});
+                        return res.status(500).send({
+                            status: '500: Internal Server Error',
+                            message: 'Something went wrong! Please try again later!'
+                        });
 
                     if (user.admin == true) { // they also need to be administrators to be allowed to enter
 
                         Users.find({}, (err, users) => {
                             if (err)
-                                return res.json(err);
+                                return res.status(500).send({
+                                    status: '500: Internal Server Error',
+                                    message: 'Something went wrong! Please try again later!'
+                                });
 
                             let context = {
                                 status: "200: OK",

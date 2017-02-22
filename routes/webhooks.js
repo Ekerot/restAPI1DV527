@@ -10,8 +10,7 @@ const Users = require('../models/Users.js');
 let WebHooks = require('node-webhooks')
 
 let webHooks = new WebHooks({
-    db: './webHooksDB.json', // json file that store webhook URLs
-});
+    db: './webHooksDB.json'}); // json file that store webhook URLs
 
 router.get('/', (req, res) => {
 
@@ -84,12 +83,15 @@ router.post('/add/createcatchdata', (req, res) => { // add new url to webbhooksD
             });
         })
         .catch((err) => {
-            res.send({Message: `Error ${err}`});
+            return res.status(500).send({
+                status: '500: Internal Server Error',
+                message: 'Something went wrong! Please try again later!'
+            });
         });
 });
 
 
-router.delete('/delete/createcatchdata', (req) => { // delete url from webhooksDB
+router.delete('/delete/createcatchdata', (req, res) => { // delete url from webhooksDB
     webHooks.remove('createcatchdata', req.body.url).then (() =>{
         res.status(201).send({
             status: '201: Accepted',
@@ -114,8 +116,11 @@ router.delete('/delete/createcatchdata', (req) => { // delete url from webhooksD
         });
     })
         .catch((err) => {
-        res.send({Message: `Error ${err}`});
-    });
+            return res.status(500).send({
+                status: '500: Internal Server Error',
+                message: 'Something went wrong! Please try again later!'
+            });
+        });
 });
 
 module.exports = router;

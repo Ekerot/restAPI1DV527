@@ -26,7 +26,6 @@ app.use('/api/v1/catches', require('./routes/catches'));
 app.use('/api/v1/webhook', require('./routes/webhooks'));
 
 app.use((req, res) => res.status(404).json({status: '404: No response'}));
-app.use((req, res) => res.status(500).json({status: '500: No response'}));
 
 app.listen(port, () => console.log(new Date() + ` Express app listening on port ${port}!`
     + '\nIf you want to terminate press ctrl+c'));

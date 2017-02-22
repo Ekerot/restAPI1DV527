@@ -18,7 +18,10 @@ router.get('/', (req, res) => {   //shows all registered data
 
     FishData.find((err, fish) => {
         if (err)
-            res.send({Message: `Error ${err}`});
+            return res.status(500).send({
+                status: '500: Internal Server Error',
+                message: 'Something went wrong! Please try again later!'
+            });
 
         let context = {
             status: '200: OK',
@@ -61,7 +64,7 @@ router.get('/', (req, res) => {   //shows all registered data
                                     href: "http://localhost:3000/api/v1/catches/"+fish._id,
                                     type: "application/json",
                                     rel: "next",
-                                    verb: "PUT",
+                                    verb: "PATCH",
                                     title: "Update data",
                                     description: "Parameters: longitude, latitude, " +
                                     "species, weight, length, imageurl, method, description. " +
@@ -127,7 +130,10 @@ router.post('/',(req, res) => {    // register new data
 
                 fishData.save().then((err) => {  // save data to DBS
                     if (err)
-                        return res.send(err);
+                        return res.status(500).send({
+                            status: '500: Internal Server Error',
+                            message: 'Something went wrong! Please try again later!'
+                        });
 
                     res.setHeader('Cache-control', 'no-cache');
 
@@ -169,7 +175,10 @@ router.get('/:id', (req, res) => {  //gets individual data for each catch
     //Search for data by ID
     FishData.findById(req.params.id, (err, fish) => {
         if (err)
-            return res.send({Message: `Error ${err}`});
+            return res.status(500).send({
+            status: '500: Internal Server Error',
+            message: 'Something went wrong! Please try again later!'
+        });
 
         let context = {
             status: '200: OK',
@@ -215,7 +224,8 @@ router.get('/:id', (req, res) => {  //gets individual data for each catch
     });
 });
 
-router.put('/:id',(req, res) => {  // update and change data in registered catch
+router.patch('/:id',(req, res) => {  // update and change data in registered catch
+// using patch after reading this article: https://blog.risingstack.com/10-best-practices-for-writing-node-js-rest-apis/
 
     let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
@@ -244,7 +254,10 @@ router.put('/:id',(req, res) => {  // update and change data in registered catch
                         else {
 
                             if (err)
-                                res.send({Message: `Error ${err}`});
+                                return res.status(500).send({
+                                    status: '500: Internal Server Error',
+                                    message: 'Something went wrong! Please try again later!'
+                                });
 
                             catchData.longitude = req.body.longitude;
                             catchData.latitude = req.body.latitude;
@@ -258,8 +271,10 @@ router.put('/:id',(req, res) => {  // update and change data in registered catch
                             catchData.save().then((err) => {
 
                                 if (err)
-                                    return res.send(err);
-
+                                    return res.status(500).send({
+                                        status: '500: Internal Server Error',
+                                        message: 'Something went wrong! Please try again later!'
+                                    });
                             });
                         }
                     });
@@ -327,7 +342,10 @@ router.delete('/:id',(req, res) => {
                             });
 
                         if (err)
-                            res.send({Message: `Error ${err}`});
+                            return res.status(500).send({
+                                status: '500: Internal Server Error',
+                                message: 'Something went wrong! Please try again later!'
+                            });
 
                         res.setHeader("Cache-control", "no-cache");
                         return res.status(202).send({
