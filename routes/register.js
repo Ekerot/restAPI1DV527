@@ -13,10 +13,11 @@ router.post('/register', (req, res) =>{
         res.status(400).send({
             Status: '400: Bad Request',
             message: 'You need to enter your desired username' +
-        ', password and email to register!'});
+            ', password and email to register!'});
 
     else {
-        let user = new Users({  //creating new user from input
+
+        let user = Users({  //creating new user from input
 
             username: req.body.username,
             email: req.body.email,
@@ -26,7 +27,11 @@ router.post('/register', (req, res) =>{
         });
 
         user.save()
-            .then(() => {
+            .then((err) => {
+
+                if (err === 11000) {
+                    return res.status(500).send({succes: false, message: 'User already exist!'});
+                }
 
                 res.setHeader('Cache-control', 'no-cache');
                 res.status(201).send({
@@ -55,9 +60,9 @@ router.post('/register', (req, res) =>{
             }).catch((err) =>{
             return res.status(500).send({
                 status: '500: Internal Server Error',
-                message: 'Something went wrong! Please try again later!'
-            }); // send error if something went wrong
-            })
+                message: 'User already exists!'
+            });// send error if something went wrong
+        });
     }
 });
 

@@ -245,7 +245,7 @@ router.patch('/:id',(req, res) => {  // update and change data in registered cat
                                                                                     // the data can change it.
 
                         if (user.username !== catchData.username)
-                            return res.status(403).send({
+                             res.status(403).send({
                                 status: '403: Forbidden',
                                 message: 'You are not allowed to update data that belongs to other users!'
                             });
@@ -275,36 +275,35 @@ router.patch('/:id',(req, res) => {  // update and change data in registered cat
                                         message: 'Something went wrong! Please try again later!'
                                     });
                             });
+                            res.setHeader('Cache-control', 'no-cache');
+
+                            return res.status(202).send({
+                                status: '202: Accepted',
+                                message: 'Data updated',
+                                _links: {
+                                    self: [
+                                        {
+                                            href: 'http://localhost:3000/api/v1/catches/'+req.params.id,
+                                            type: 'application/json',
+                                            rel: 'self',
+                                            verb: 'PUT',
+                                            title: 'Update data'
+                                        }
+                                    ],
+                                    from:[
+                                        {
+                                            href: 'http://localhost:3000/api/v1/catches',
+                                            type: 'application/json',
+                                            rel: 'previous',
+                                            verb: 'GET',
+                                            title: 'A collection of catches'
+                                        }]
+                                }
+                            });                                                                           
                         }
                     });
                 });
             }
-
-            res.setHeader('Cache-control', 'no-cache');
-
-            return res.status(202).send({
-                status: '202: Accepted',
-                message: 'Data updated',
-                _links: {
-                    self: [
-                        {
-                            href: 'http://localhost:3000/api/v1/catches/'+req.params.id,
-                            type: 'application/json',
-                            rel: 'self',
-                            verb: 'PUT',
-                            title: 'Update data'
-                        }
-                    ],
-                    from:[
-                        {
-                            href: 'http://localhost:3000/api/v1/catches',
-                            type: 'application/json',
-                            rel: 'previous',
-                            verb: 'GET',
-                            title: 'A collection of catches'
-                        }]
-                }
-            });
         });
     } else {
 

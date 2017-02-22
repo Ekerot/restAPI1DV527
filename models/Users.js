@@ -6,6 +6,7 @@
 
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt-nodejs');
+var uniqueValidator = require('mongoose-unique-validator');
 
 //defining a schema for the login
 let userSchema = new mongoose.Schema({
@@ -15,6 +16,8 @@ let userSchema = new mongoose.Schema({
     // before self assigned pre saves
     admin: {type:Boolean}
 });
+
+userSchema.plugin(uniqueValidator);
 
 //making a pre save that hashing the password
 userSchema.pre('save', function(next) {

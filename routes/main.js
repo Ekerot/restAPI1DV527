@@ -51,6 +51,22 @@ router.get('/', (req, res) => {  //first route to go to information about the ap
                             description: "Parameters: username, password, email. All are required"
                         },
                         {
+                            href: "http://localhost:3000/api/v1/user",
+                            type: "application/json",
+                            rel: "next",
+                            verb: "GET",
+                            title: "Show all users",
+                            description: "Only available to admin"
+                        },
+                        {
+                            href: "http://localhost:3000/api/v1/user",
+                            type: "application/json",
+                            rel: "next",
+                            verb: "POST",
+                            title: "Login as user",
+                            description: "Parameters: username, password"
+                        },
+                        {
                             href: "http://localhost:3000/api/v1/add/webhook",
                             type: "application/json",
                             rel: "next",
