@@ -1,0 +1,350 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Assignment2: 1dv527",
+		"_postman_id": "1d981611-16b7-cb08-8b5a-e4bb17fa8555",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/api/v1/catches?username=Daniel",
+			"request": {
+				"url": "localhost:3000/api/v1/catches?username=Daniel",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "method",
+							"value": "hallihallå",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/catches",
+			"request": {
+				"url": "http://localhost:3000/api/v1/catches",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show catches"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/users",
+			"request": {
+				"url": "http://localhost:3000/api/v1/users/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmllbCIsImlhdCI6MTQ4Nzc2Mzg0OCwiZXhwIjoxNDg3NzY3NDQ4fQ.w-xP_71_LIsNrmGM-rI8GZ_4vKjJkOofi74MGcNkQ60",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Daniel",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "123123123",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Show users"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1",
+			"request": {
+				"url": "http://localhost:3000/api/v1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "First page"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/catches/",
+			"request": {
+				"url": "http://localhost:3000/api/v1/catches/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "method",
+							"value": "Spinnfiske",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "imageurl",
+							"value": "http://i.imgur.com/A439KIt.jpg",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "weight",
+							"value": "2000",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "species",
+							"value": "Red Lipped Bat Fish",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Create data"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/register",
+			"request": {
+				"url": "http://localhost:3000/api/v1/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Daniel",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "123123123",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "email",
+							"value": "hej@hej.se",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "admin",
+							"value": "true",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Register user"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/users",
+			"request": {
+				"url": "http://localhost:3000/api/v1/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Daniel",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "123123123",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/catches/58add64a0188b551499857d1",
+			"request": {
+				"url": "http://localhost:3000/api/v1/catches/58add64a0188b551499857d1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/catches/58add64a0188b551499857d1",
+			"request": {
+				"url": "http://localhost:3000/api/v1/catches/58add64a0188b551499857d1",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmllbCIsImlhdCI6MTQ4Nzc4Nzc0NywiZXhwIjoxNDg3NzkxMzQ3fQ.Ndyo5kK4X0eiZzo8isr5Rye9OBlr8s4i1we2qUcJtEM",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "method",
+							"value": "Justring",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Update data"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/catches/58add64a0188b551499857d1",
+			"request": {
+				"url": "http://localhost:3000/api/v1/catches/58add64a0188b551499857d1",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmllbCIsImlhdCI6MTQ4Nzc4Nzc0NywiZXhwIjoxNDg3NzkxMzQ3fQ.Ndyo5kK4X0eiZzo8isr5Rye9OBlr8s4i1we2qUcJtEM",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "method",
+							"value": "Justring",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Delete data"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/webhook/add/createcatchdata",
+			"request": {
+				"url": "http://localhost:3000/api/v1/webhook/add/createcatchdata",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "url",
+							"value": "http://requestb.in/q19f5vq1",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/webhook",
+			"request": {
+				"url": "http://localhost:3000/api/v1/webhook",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/v1/webhook/delete/createcatchdata",
+			"request": {
+				"url": "http://localhost:3000/api/v1/webhook/delete/createcatchdata",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "url",
+							"value": "https://requestb.in/q19f5vq1?inspect",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
