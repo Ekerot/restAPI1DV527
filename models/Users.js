@@ -6,7 +6,7 @@
 
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt-nodejs');
-var uniqueValidator = require('mongoose-unique-validator');
+const uniqueValidator = require('mongoose-unique-validator');
 
 //defining a schema for the login
 let userSchema = new mongoose.Schema({
