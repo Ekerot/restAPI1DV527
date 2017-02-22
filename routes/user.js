@@ -37,7 +37,7 @@ router.post('/users', (req,res) => {
                         expiresIn: '1h' //expires in 1h - we don´ want it to be to long on the protected routes
                     });
 
-                    res.setHeader("Cache-control", "no-cache");
+                    res.setHeader('Cache-control', 'no-cache');
                     return res.status(202).send({
                         status: '202: Accepted',
                         message: 'Welcome!',
@@ -45,20 +45,20 @@ router.post('/users', (req,res) => {
                         _links: {
                             self: [
                                 {
-                                    href: "http://localhost:3000/api/v1/login",
-                                    type: "application/json",
-                                    rel: "next",
-                                    verb: "POST",
-                                    title: "Login as user"
+                                    href: 'http://localhost:3000/api/v1/login',
+                                    type: 'application/json',
+                                    rel: 'next',
+                                    verb: 'POST',
+                                    title: 'Login as user'
                                 }
                             ],
                             from: [
                                 {
-                                    href: "http://localhost:3000/api/v1",
-                                    type: "application/json",
-                                    rel: "self",
-                                    verb: "GET",
-                                    title: "This is the API root!"
+                                    href: 'http://localhost:3000/api/v1',
+                                    type: 'application/json',
+                                    rel: 'self',
+                                    verb: 'GET',
+                                    title: 'This is the API root!'
                                 }]
                         }
 
@@ -100,7 +100,7 @@ router.get('/users', (req, res) => {   //get all users, only for administrators
                                 });
 
                             let context = {
-                                status: "200: OK",
+                                status: '200: OK',
                                 users: users.map((users) => {
                                     return {
                                         username: users.username,
@@ -111,25 +111,25 @@ router.get('/users', (req, res) => {   //get all users, only for administrators
                                 _links: {
                                     self: [
                                         {
-                                            href: "http://localhost:3000/api/v1/users",
-                                            type: "application/json",
-                                            rel: "self",
-                                            verb: "GET",
-                                            title: "Users data"
+                                            href: 'http://localhost:3000/api/v1/users',
+                                            type: 'application/json',
+                                            rel: 'self',
+                                            verb: 'GET',
+                                            title: 'Users data'
                                         }
                                     ],
                                     from: [
                                         {
-                                            href: "http://localhost:3000/api/v1",
-                                            type: "application/json",
-                                            rel: "self",
-                                            verb: "GET",
-                                            title: "This is the API root!"
+                                            href: 'http://localhost:3000/api/v1',
+                                            type: 'application/json',
+                                            rel: 'self',
+                                            verb: 'GET',
+                                            title: 'This is the API root!'
                                         }]
                                 }
                             };
 
-                            res.setHeader("Cache-control", "private"); // set header to cache-control private
+                            res.setHeader('Cache-control', 'private'); // set header to cache-control private
                             return res.status(200).send(context);
                         });
                     }

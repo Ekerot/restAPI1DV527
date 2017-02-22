@@ -10,7 +10,8 @@ const Users = require('../models/Users');
 router.post('/register', (req, res) =>{
 
     if(!req.body.username || !req.body.email || !req.body.password) //input on all parameters needs to be done
-        res.status(401).send({
+        res.status(400).send({
+            Status: '400: Bad Request',
             message: 'You need to enter your desired username' +
         ', password and email to register!'});
 
@@ -20,6 +21,7 @@ router.post('/register', (req, res) =>{
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
+            admin: req.body.admin
 
         });
 

@@ -1,5 +1,9 @@
 # dekes03-examination-2
 
+Start with installing all the dependencies:
+
+`npm install`
+
 Before using the api use this line to set the enviormental variable for the JWT secret:
 
 `export TOKEN=whateveryoulike`
@@ -41,7 +45,7 @@ For example: getCatchesByFisherman or getCatchesByFishType.
 
 I would use querystrings:
 
-`api/v1/catches/catches?fields=username`
+`localhost:3000/api/v1/catches?param=value`
 
 It is simple to read and you can get the selected data in an easy way at a given time. After reading  it also looked like the most vrefered in the community.
 
@@ -66,7 +70,8 @@ Cons:
 
  
 ##Explain how your web hook works.
-My webhook sends out the data of new created when data is created, changed and deleted in the API. I have my own route/lib for the webhook, I wasn´ sure where to put it but I guess I will know when I get your respons).
+My webhook sends out the data of new created when data is created at the API. I have my own route/lib for the webhook, I wasn´ sure where to put it but I guess I will know when I get your respons).
+I could in a couple of minutes do catches for all the 
 
 ##Since this is your first own web API there are probably things you would solve in an other way looking back at this assignment. 
 Well, I would like to use the Restify framwork to try it out. Not that it was any problem using Express but it would be fun to use Restify though it is specialized to help you build restAPI:s.
@@ -74,5 +79,7 @@ There is also a lot of small things I would change and that I changed during the
 
 ##Did you do something extra besides the fundamental requirements?
 
-*   I did use version handeling though in the URL which is questionable(but every body does so ;-))
+*   I did use version handling though in the URL which is questionable(but every body does so ;-))
 *   I have implemented admin role to access user information
+*   Only users that created the data can change and delete it
+*   You can search the database with query strings

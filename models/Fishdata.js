@@ -15,8 +15,8 @@ let FishSchema = new Schema({
     },
     fish: {
         species: {type: String,  maxlength: 30},
-        weight: {type: String,  maxlength: 15},
-        length: {type: String,  maxlength: 15},
+        weight: {type: Number,  maxlength: 15},
+        length: {type: Number,  maxlength: 15},
     },
     imageurl: {type: String,  maxlength: 100},
     timestamp: {

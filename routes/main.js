@@ -29,7 +29,9 @@ router.get('/', (req, res) => {  //first route to go to information about the ap
                             type: "application/json",
                             rel: "next",
                             verb: "GET",
-                            title: "Collection of catches"
+                            title: "Collection of catches",
+                            description: "It is possible to search for different parameters with query strings " +
+                            "example localhost:3000/api/v1/catches?username=Daniel"
                         },
                         {
                             href: "http://localhost:3000/api/v1/catches",
